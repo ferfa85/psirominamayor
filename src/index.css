@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #faf8fd;
+  --color-surface-dim: #dbd9de;
+  --color-surface-bright: #faf8fd;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f3f8;
+  --color-surface-container: #efedf2;
+  --color-surface-container-high: #e9e7ec;
+  --color-surface-container-highest: #e3e2e7;
+  --color-on-surface: #1b1b1f;
+  --color-on-surface-variant: #4a454d;
+  --color-outline: #7b757e;
+  --color-outline-variant: #ccc4ce;
+  --color-primary: #3f2a55;
+  --color-primary-container: #57416d;
+  --color-on-primary: #ffffff;
+  --color-secondary: #645787;
+  --color-secondary-container: #d7c6fe;
+  --color-on-secondary-container: #5e5080;
+  --color-plum-deep: #3E2E4F;
+  --color-lavender-subtle: #EBE6F5;
+  --color-surface-pearly: #F3EEF9;
+  --color-sage-ground: #6E8573;
+  --color-gold-warm: #C29B38;
+  --color-whatsapp-green: #059669;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+  
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+  }
+}
+
+.font-display {
+  font-family: "Playfair Display", Georgia, serif;
+}

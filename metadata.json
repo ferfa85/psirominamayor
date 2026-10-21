@@ -1,0 +1,6 @@
+{
+  "name": "Lic. Romina Natalia Mayor - Psicoterapia Sistémica",
+  "description": "Consultorio de psicoterapia sistémica relacional para jóvenes, adultos, parejas y familias. Atención presencial en CABA (Núñez) y Vicente López, y virtual.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
