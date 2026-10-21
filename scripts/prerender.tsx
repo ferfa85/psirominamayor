@@ -37,7 +37,7 @@ const jsonLd = {
       url: `${SITE_URL}/`,
       image: `${SITE_URL}/img/consultorio-psicoterapia-sistemica.jpg`,
       telephone: PHONE_NUMBER_DISPLAY,
-      email: 'contacto@licrominamayor.com.ar',
+      email: 'mayor.romina@gmail.com',
       medicalSpecialty: 'Psychiatric',
       priceRange: '$$',
       areaServed: [

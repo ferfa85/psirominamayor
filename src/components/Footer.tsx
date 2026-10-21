@@ -108,10 +108,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
               <a
                 className="inline-flex items-center gap-2 text-xs sm:text-sm text-[#1b1b1f] hover:text-[#3f2a55] transition-colors"
-                href="mailto:contacto@licrominamayor.com.ar"
+                href="mailto:mayor.romina@gmail.com"
               >
                 <Mail className="w-4 h-4 text-[#3f2a55]" />
-                <span className="font-mono text-xs">contacto@licrominamayor.com.ar</span>
+                <span className="font-mono text-xs">mayor.romina@gmail.com</span>
               </a>
 
               <a

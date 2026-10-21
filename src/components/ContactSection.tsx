@@ -198,7 +198,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <Mail className="w-5 h-5 text-[#645787] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-[#3f2a55] block font-semibold">Email de Contacto</strong>
-                  <span className="font-mono text-xs">contacto@licrominamayor.com.ar</span>
+                  <span className="font-mono text-xs">mayor.romina@gmail.com</span>
                 </div>
               </div>
             </div>
