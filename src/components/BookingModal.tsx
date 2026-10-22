@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { sendForm } from '../lib/sendForm';
 import { X, Calendar, Clock, CheckCircle2, MessageCircle, Send, ArrowRight, ShieldCheck } from 'lucide-react';
 import { ServiceType } from '../types';
 import { PHONE_NUMBER_RAW } from '../data';
@@ -29,6 +30,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     comentario: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
   if (!isOpen) return null;
 
@@ -74,16 +77,25 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     return `https://wa.me/${PHONE_NUMBER_RAW}?text=${encodeURIComponent(text)}`;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    onSuccess({
-      service,
-      modality,
-      timePreference,
-      selectedDays,
-      ...formData
-    });
+    setSending(true);
+    setSendError(false);
+    try {
+      await sendForm(e.currentTarget);
+      setIsSubmitted(true);
+      onSuccess({
+        service,
+        modality,
+        timePreference,
+        selectedDays,
+        ...formData
+      });
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -286,7 +298,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
               {/* Step 3: Formulario & Envío */}
               {step === 3 && (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form name="agendar" method="POST" onSubmit={handleSubmit} className="space-y-4">
+                  <input type="hidden" name="form-name" value="agendar" />
+                  <p hidden>
+                    <label>No completar: <input name="bot-field" tabIndex={-1} autoComplete="off" /></label>
+                  </p>
+                  <input type="hidden" name="servicio" value={getServiceLabel(service)} />
+                  <input type="hidden" name="modalidad" value={getModalityLabel(modality)} />
+                  <input type="hidden" name="dias" value={selectedDays.join(', ') || 'A coordinar'} />
+                  <input type="hidden" name="franja" value={getTimeLabel()} />
                   <div className="p-3 bg-[#f3eef9] rounded-xl flex items-center justify-between text-xs text-[#3f2a55]">
                     <div>
                       <span className="font-semibold block">{getServiceLabel(service)}</span>
@@ -306,6 +326,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       <label className="block text-xs font-semibold text-[#3f2a55] mb-1">Nombre y Apellido *</label>
                       <input
                         type="text"
+                        name="nombre"
                         required
                         value={formData.nombre}
                         onChange={e => setFormData({ ...formData, nombre: e.target.value })}
@@ -317,6 +338,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       <label className="block text-xs font-semibold text-[#3f2a55] mb-1">WhatsApp o Teléfono *</label>
                       <input
                         type="tel"
+                        name="telefono"
                         required
                         value={formData.telefono}
                         onChange={e => setFormData({ ...formData, telefono: e.target.value })}
@@ -330,6 +352,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     <label className="block text-xs font-semibold text-[#3f2a55] mb-1">Correo Electrónico (opcional)</label>
                     <input
                       type="email"
+                      name="email"
                       value={formData.email}
                       onChange={e => setFormData({ ...formData, email: e.target.value })}
                       placeholder="tunombre@ejemplo.com"
@@ -341,6 +364,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     <label className="block text-xs font-semibold text-[#3f2a55] mb-1">¿Algún comentario o motivo puntual? (opcional)</label>
                     <textarea
                       rows={2}
+                      name="comentario"
                       value={formData.comentario}
                       onChange={e => setFormData({ ...formData, comentario: e.target.value })}
                       placeholder="Breve detalle sobre lo que te gustaría abordar..."
@@ -349,12 +373,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
 
                   <div className="pt-2 flex flex-col gap-2">
+                    {sendError && (
+                      <p role="alert" className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-xl p-3 leading-relaxed">
+                        No pudimos enviar tu solicitud. Probá de nuevo o usá el botón de WhatsApp de abajo.
+                      </p>
+                    )}
                     <button
                       type="submit"
-                      className="w-full py-3 rounded-full bg-[#3f2a55] hover:bg-[#3E2E4F] text-white font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2"
+                      disabled={sending}
+                      className="w-full py-3 rounded-full bg-[#3f2a55] hover:bg-[#3E2E4F] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2"
                     >
                       <Send className="w-4 h-4" />
-                      <span>Confirmar y Enviar Solicitud</span>
+                      <span>{sending ? 'Enviando...' : 'Confirmar y Enviar Solicitud'}</span>
                     </button>
 
                     <a

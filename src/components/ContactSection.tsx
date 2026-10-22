@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { ServiceType } from '../types';
 import { PHONE_NUMBER_RAW, PHONE_NUMBER_DISPLAY } from '../data';
+import { sendForm } from '../lib/sendForm';
 
 interface ContactSectionProps {
   selectedService: ServiceType;
@@ -26,6 +27,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   );
 
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [formData, setFormData] = useState({
     nombre: '',
     telefono: '',
@@ -80,13 +83,23 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     window.open(url, '_blank');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormSubmitted(true);
+    setSending(true);
+    setSendError(false);
+    try {
+      await sendForm(e.currentTarget);
+      setFormSubmitted(true);
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const handleResetForm = () => {
     setFormSubmitted(false);
+    setSendError(false);
     setFormData({
       nombre: '',
       telefono: '',
@@ -217,7 +230,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               </div>
 
               {!formSubmitted ? (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4" id="contact-clinic-form">
+                <form name="contacto" method="POST" onSubmit={handleSubmit} className="flex flex-col gap-4" id="contact-clinic-form">
+                  <input type="hidden" name="form-name" value="contacto" />
+                  <p hidden>
+                    <label>No completar: <input name="bot-field" tabIndex={-1} autoComplete="off" /></label>
+                  </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-xs font-semibold text-[#3f2a55]" htmlFor="form-nombre">
@@ -225,6 +242,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="form-nombre"
+                      name="nombre"
                         required
                         type="text"
                         value={formData.nombre}
@@ -240,6 +258,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="form-telefono"
+                      name="telefono"
                         required
                         type="tel"
                         value={formData.telefono}
@@ -257,6 +276,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="form-email"
+                      name="email"
                         required
                         type="email"
                         value={formData.email}
@@ -272,6 +292,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <select
                         id="form-modalidad"
+                      name="modalidad"
                         value={formData.modalidad}
                         onChange={(e) => setFormData({ ...formData, modalidad: e.target.value })}
                         className="w-full p-3 rounded-xl bg-[#f5f3f8] border border-[#ebe6f5] text-xs sm:text-sm text-[#1b1b1f] focus:outline-none focus:ring-2 focus:ring-[#3f2a55]/20"
@@ -290,6 +311,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     </label>
                     <select
                       id="form-servicio"
+                      name="servicio"
                       value={formData.servicio}
                       onChange={handleFormServiceChange}
                       className="w-full p-3 rounded-xl bg-[#f5f3f8] border border-[#ebe6f5] text-xs sm:text-sm text-[#1b1b1f] focus:outline-none focus:ring-2 focus:ring-[#3f2a55]/20"
@@ -308,6 +330,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     </label>
                     <textarea
                       id="form-mensaje"
+                      name="mensaje"
                       rows={4}
                       value={formData.mensaje}
                       onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
@@ -316,12 +339,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     />
                   </div>
 
+                  {sendError && (
+                    <p role="alert" className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-xl p-3 leading-relaxed">
+                      No pudimos enviar tu consulta. Probá de nuevo en unos minutos o escribinos directamente por WhatsApp al {PHONE_NUMBER_DISPLAY}.
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-full bg-[#3f2a55] hover:bg-[#3E2E4F] text-white font-semibold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-2"
+                    disabled={sending}
+                    className="w-full py-3.5 rounded-full bg-[#3f2a55] hover:bg-[#3E2E4F] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-2"
                   >
                     <Mail className="w-4 h-4" />
-                    <span>Enviar Consulta Confidencial</span>
+                    <span>{sending ? 'Enviando...' : 'Enviar Consulta Confidencial'}</span>
                   </button>
 
                   <p className="text-[11px] text-[#4a454d] text-center leading-relaxed">
