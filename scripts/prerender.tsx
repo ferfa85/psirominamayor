@@ -35,6 +35,7 @@ const jsonLd = {
       '@id': `${SITE_URL}/#consultorio`,
       name: 'Lic. Romina Natalia Mayor - Psicoterapia Sistémica',
       url: `${SITE_URL}/`,
+      logo: `${SITE_URL}/logo.png`,
       image: `${SITE_URL}/img/consultorio-psicoterapia-sistemica.jpg`,
       telephone: PHONE_NUMBER_DISPLAY,
       email: 'mayor.romina@gmail.com',

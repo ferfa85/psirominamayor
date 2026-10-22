@@ -43,9 +43,10 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <img
             alt="Logo Lic. Romina Mayor"
-            className="h-8 w-auto object-contain transition-transform group-hover:scale-105"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGJNQP-0nse7r2eyi_w5ZaVHz8O95da2oHfZr5drgS52gJ2mmUvxsx3C2yIr-5xzBXKPPNC0ASQQXNehjRb4R52Z_TOBB1yF_h29imE_qafFbiZMHMODbP2tAUjBlvPvvqSA4K7vy5ATApLmL9Ltjhuwf78CoQzPoL8AsxGFUM8LSzkK6kPIbqnUP8dZAl0vtntz4H2KxhrGZP4j-0ENPGarVl4ZH22zKk7KWGwTstdmFZr7chMLJ1"
-            referrerPolicy="no-referrer"
+            className="h-9 w-9 object-contain transition-transform group-hover:scale-105"
+            src="/logo.png"
+            width={36}
+            height={36}
           />
           <div className="flex flex-col">
             <span className="font-serif text-base sm:text-lg text-[#3f2a55] tracking-tight font-bold whitespace-nowrap">

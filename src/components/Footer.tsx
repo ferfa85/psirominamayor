@@ -16,9 +16,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex items-center gap-2.5">
               <img
                 alt="Logo Lic. Romina Mayor"
-                className="h-7 w-auto object-contain"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGJNQP-0nse7r2eyi_w5ZaVHz8O95da2oHfZr5drgS52gJ2mmUvxsx3C2yIr-5xzBXKPPNC0ASQQXNehjRb4R52Z_TOBB1yF_h29imE_qafFbiZMHMODbP2tAUjBlvPvvqSA4K7vy5ATApLmL9Ltjhuwf78CoQzPoL8AsxGFUM8LSzkK6kPIbqnUP8dZAl0vtntz4H2KxhrGZP4j-0ENPGarVl4ZH22zKk7KWGwTstdmFZr7chMLJ1"
-                referrerPolicy="no-referrer"
+                className="h-8 w-8 object-contain"
+                src="/logo.png"
+                width={36}
+                height={36}
               />
               <span className="font-serif text-lg text-[#3f2a55] font-bold">
                 Lic. Romina Mayor
