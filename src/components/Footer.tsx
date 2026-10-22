@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Video, Clock, Mail, MessageCircle, Download } from 'lucide-react';
+import { MapPin, Video, Clock, Mail, MessageCircle } from 'lucide-react';
 import { PHONE_NUMBER_RAW, PHONE_NUMBER_DISPLAY } from '../data';
 
 interface FooterProps {
@@ -132,15 +132,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#4a454d]">
           <p>© 2025 Lic. Romina Natalia Mayor • Psicoterapia Sistémica. Todos los derechos reservados.</p>
           <div className="flex items-center gap-4">
-            <a
-              href="/codigo-fuente.zip"
-              download="codigo-fuente-lic-romina-mayor.zip"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#ebe6f5] text-[#3f2a55] font-semibold text-[11px] hover:bg-[#ebe6f5] transition-all shadow-xs"
-              title="Descargar paquete completo del proyecto en formato .ZIP"
-            >
-              <Download className="w-3.5 h-3.5 text-[#645787]" />
-              <span>Descargar Código (.ZIP)</span>
-            </a>
             <span className="text-[11px] text-[#4a454d]/80">Espacio Clínico Habilitado MSP / CABA</span>
           </div>
         </div>
